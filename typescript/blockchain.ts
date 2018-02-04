@@ -28,18 +28,18 @@ export interface Tx {
     out:          Out[];
     lock_time:    number;
     size:         number;
-    rbf?:         boolean;
     double_spend: boolean;
     time:         number;
     tx_index:     number;
     vin_sz:       number;
     hash:         string;
     vout_sz:      number;
+    rbf?:         boolean;
 }
 
 export interface Input {
     sequence: number;
-    witness:  Witness;
+    witness:  string;
     prev_out: Out;
     script:   string;
 }
@@ -52,10 +52,6 @@ export interface Out {
     value:    number;
     n:        number;
     script:   string;
-}
-
-export enum Witness {
-    Empty = "",
 }
 
 export enum RelayedBy {
@@ -178,17 +174,17 @@ export module Convert {
             out: A(O("Out")),
             lock_time: 0,
             size: 0,
-            rbf: U(null, false),
             double_spend: false,
             time: 0,
             tx_index: 0,
             vin_sz: 0,
             hash: "",
             vout_sz: 0,
+            rbf: U(null, false),
         },
         "Input": {
             sequence: 0,
-            witness: E("Witness"),
+            witness: "",
             prev_out: O("Out"),
             script: "",
         },
@@ -201,9 +197,6 @@ export module Convert {
             n: 0,
             script: "",
         },
-        "Witness": [
-            Witness.Empty,
-        ],
         "RelayedBy": [
             RelayedBy.The0000,
             RelayedBy.The127001,

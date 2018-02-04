@@ -22,7 +22,6 @@ module QuickType exposing
     , Tx
     , Input
     , Out
-    , Witness(..)
     , RelayedBy(..)
     )
 
@@ -52,18 +51,18 @@ type alias Tx =
     , out : Array Out
     , lockTime : Int
     , size : Int
-    , rbf : Maybe Bool
     , doubleSpend : Bool
     , time : Int
     , txIndex : Int
     , vinSz : Int
     , hash : String
     , voutSz : Int
+    , rbf : Maybe Bool
     }
 
 type alias Input =
     { sequence : Int
-    , witness : Witness
+    , witness : String
     , prevOut : Out
     , script : String
     }
@@ -77,9 +76,6 @@ type alias Out =
     , n : Int
     , script : String
     }
-
-type Witness
-    = Empty
 
 type RelayedBy
     = The0000
@@ -133,13 +129,13 @@ tx =
         |> Jpipe.required "out" (Jdec.array out)
         |> Jpipe.required "lock_time" Jdec.int
         |> Jpipe.required "size" Jdec.int
-        |> Jpipe.optional "rbf" (Jdec.nullable Jdec.bool) Nothing
         |> Jpipe.required "double_spend" Jdec.bool
         |> Jpipe.required "time" Jdec.int
         |> Jpipe.required "tx_index" Jdec.int
         |> Jpipe.required "vin_sz" Jdec.int
         |> Jpipe.required "hash" Jdec.string
         |> Jpipe.required "vout_sz" Jdec.int
+        |> Jpipe.optional "rbf" (Jdec.nullable Jdec.bool) Nothing
 
 encodeTx : Tx -> Jenc.Value
 encodeTx x =
@@ -151,20 +147,20 @@ encodeTx x =
         , ("out", makeArrayEncoder encodeOut x.out)
         , ("lock_time", Jenc.int x.lockTime)
         , ("size", Jenc.int x.size)
-        , ("rbf", makeNullableEncoder Jenc.bool x.rbf)
         , ("double_spend", Jenc.bool x.doubleSpend)
         , ("time", Jenc.int x.time)
         , ("tx_index", Jenc.int x.txIndex)
         , ("vin_sz", Jenc.int x.vinSz)
         , ("hash", Jenc.string x.hash)
         , ("vout_sz", Jenc.int x.voutSz)
+        , ("rbf", makeNullableEncoder Jenc.bool x.rbf)
         ]
 
 input : Jdec.Decoder Input
 input =
     Jpipe.decode Input
         |> Jpipe.required "sequence" Jdec.int
-        |> Jpipe.required "witness" witness
+        |> Jpipe.required "witness" Jdec.string
         |> Jpipe.required "prev_out" out
         |> Jpipe.required "script" Jdec.string
 
@@ -172,7 +168,7 @@ encodeInput : Input -> Jenc.Value
 encodeInput x =
     Jenc.object
         [ ("sequence", Jenc.int x.sequence)
-        , ("witness", encodeWitness x.witness)
+        , ("witness", Jenc.string x.witness)
         , ("prev_out", encodeOut x.prevOut)
         , ("script", Jenc.string x.script)
         ]
@@ -199,19 +195,6 @@ encodeOut x =
         , ("n", Jenc.int x.n)
         , ("script", Jenc.string x.script)
         ]
-
-witness : Jdec.Decoder Witness
-witness =
-    Jdec.string
-        |> Jdec.andThen (\str ->
-            case str of
-                "" -> Jdec.succeed Empty
-                somethingElse -> Jdec.fail <| "Invalid Witness: " ++ somethingElse
-        )
-
-encodeWitness : Witness -> Jenc.Value
-encodeWitness x = case x of
-    Empty -> Jenc.string ""
 
 relayedBy : Jdec.Decoder RelayedBy
 relayedBy =

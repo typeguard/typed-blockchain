@@ -50,20 +50,20 @@ type Tx struct {
 	Out         []Out     `json:"out"`
 	LockTime    int64     `json:"lock_time"`
 	Size        int64     `json:"size"`
-	Rbf         *bool     `json:"rbf"`
 	DoubleSpend bool      `json:"double_spend"`
 	Time        int64     `json:"time"`
 	TxIndex     int64     `json:"tx_index"`
 	VinSz       int64     `json:"vin_sz"`
 	Hash        string    `json:"hash"`
 	VoutSz      int64     `json:"vout_sz"`
+	Rbf         *bool     `json:"rbf"`
 }
 
 type Input struct {
-	Sequence int64   `json:"sequence"`
-	Witness  Witness `json:"witness"`
-	PrevOut  Out     `json:"prev_out"`
-	Script   string  `json:"script"`
+	Sequence int64  `json:"sequence"`
+	Witness  string `json:"witness"`
+	PrevOut  Out    `json:"prev_out"`
+	Script   string `json:"script"`
 }
 
 type Out struct {
@@ -75,11 +75,6 @@ type Out struct {
 	N       int64  `json:"n"`
 	Script  string `json:"script"`
 }
-
-type Witness string
-const (
-	Empty Witness = ""
-)
 
 type RelayedBy string
 const (

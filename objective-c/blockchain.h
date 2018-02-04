@@ -11,18 +11,11 @@
 @class QTTx;
 @class QTInput;
 @class QTOut;
-@class QTWitness;
 @class QTRelayedBy;
 
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Boxed enums
-
-@interface QTWitness : NSObject
-@property (nonatomic, readonly, copy) NSString *value;
-+ (instancetype _Nullable)withValue:(NSString *)value;
-+ (QTWitness *)empty;
-@end
 
 @interface QTRelayedBy : NSObject
 @property (nonatomic, readonly, copy) NSString *value;
@@ -63,18 +56,18 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy)             NSArray<QTOut *> *out;
 @property (nonatomic, assign)           NSInteger lockTime;
 @property (nonatomic, assign)           NSInteger size;
-@property (nonatomic, nullable, strong) NSNumber *rbf;
 @property (nonatomic, assign)           BOOL isDoubleSpend;
 @property (nonatomic, assign)           NSInteger time;
 @property (nonatomic, assign)           NSInteger txIndex;
 @property (nonatomic, assign)           NSInteger vinSz;
 @property (nonatomic, copy)             NSString *theHash;
 @property (nonatomic, assign)           NSInteger voutSz;
+@property (nonatomic, nullable, strong) NSNumber *rbf;
 @end
 
 @interface QTInput : NSObject
 @property (nonatomic, assign) NSInteger sequence;
-@property (nonatomic, assign) QTWitness *witness;
+@property (nonatomic, copy)   NSString *witness;
 @property (nonatomic, strong) QTOut *prevOut;
 @property (nonatomic, copy)   NSString *script;
 @end

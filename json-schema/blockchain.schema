@@ -54,11 +54,7 @@
                     "type": "integer"
                 },
                 "witness": {
-                    "type": "string",
-                    "enum": [
-                        ""
-                    ],
-                    "title": "witness"
+                    "type": "string"
                 },
                 "prev_out": {
                     "$ref": "#/definitions/Out"
@@ -131,8 +127,8 @@
                 "relayed_by": {
                     "type": "string",
                     "enum": [
-                        "0.0.0.0",
-                        "127.0.0.1"
+                        "127.0.0.1",
+                        "0.0.0.0"
                     ],
                     "title": "relayed_by"
                 },
@@ -147,9 +143,6 @@
                 },
                 "size": {
                     "type": "integer"
-                },
-                "rbf": {
-                    "type": "boolean"
                 },
                 "double_spend": {
                     "type": "boolean"
@@ -168,6 +161,9 @@
                 },
                 "vout_sz": {
                     "type": "integer"
+                },
+                "rbf": {
+                    "type": "boolean"
                 }
             },
             "required": [

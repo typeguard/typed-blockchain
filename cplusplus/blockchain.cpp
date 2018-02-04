@@ -31,11 +31,9 @@ namespace quicktype {
         std::string script;
     };
 
-    enum class Witness { EMPTY };
-
     struct Input {
         int64_t sequence;
-        Witness witness;
+        std::string witness;
         struct Out prev_out;
         std::string script;
     };
@@ -50,13 +48,13 @@ namespace quicktype {
         std::vector<struct Out> out;
         int64_t lock_time;
         int64_t size;
-        std::unique_ptr<bool> rbf;
         bool double_spend;
         int64_t time;
         int64_t tx_index;
         int64_t vin_sz;
         std::string hash;
         int64_t vout_sz;
+        std::unique_ptr<bool> rbf;
     };
 
     struct UnconfirmedTransactions {
@@ -136,7 +134,7 @@ namespace nlohmann {
 
     inline void from_json(const json& _j, struct quicktype::Input& _x) {
         _x.sequence = _j.at("sequence").get<int64_t>();
-        _x.witness = _j.at("witness").get<quicktype::Witness>();
+        _x.witness = _j.at("witness").get<std::string>();
         _x.prev_out = _j.at("prev_out").get<struct quicktype::Out>();
         _x.script = _j.at("script").get<std::string>();
     }
@@ -157,13 +155,13 @@ namespace nlohmann {
         _x.out = _j.at("out").get<std::vector<struct quicktype::Out>>();
         _x.lock_time = _j.at("lock_time").get<int64_t>();
         _x.size = _j.at("size").get<int64_t>();
-        _x.rbf = quicktype::get_optional<bool>(_j, "rbf");
         _x.double_spend = _j.at("double_spend").get<bool>();
         _x.time = _j.at("time").get<int64_t>();
         _x.tx_index = _j.at("tx_index").get<int64_t>();
         _x.vin_sz = _j.at("vin_sz").get<int64_t>();
         _x.hash = _j.at("hash").get<std::string>();
         _x.vout_sz = _j.at("vout_sz").get<int64_t>();
+        _x.rbf = quicktype::get_optional<bool>(_j, "rbf");
     }
 
     inline void to_json(json& _j, const struct quicktype::Tx& _x) {
@@ -175,13 +173,13 @@ namespace nlohmann {
         _j["out"] = _x.out;
         _j["lock_time"] = _x.lock_time;
         _j["size"] = _x.size;
-        _j["rbf"] = _x.rbf;
         _j["double_spend"] = _x.double_spend;
         _j["time"] = _x.time;
         _j["tx_index"] = _x.tx_index;
         _j["vin_sz"] = _x.vin_sz;
         _j["hash"] = _x.hash;
         _j["vout_sz"] = _x.vout_sz;
+        _j["rbf"] = _x.rbf;
     }
 
     inline void from_json(const json& _j, struct quicktype::UnconfirmedTransactions& _x) {
@@ -191,18 +189,6 @@ namespace nlohmann {
     inline void to_json(json& _j, const struct quicktype::UnconfirmedTransactions& _x) {
         _j = json::object();
         _j["txs"] = _x.txs;
-    }
-
-    inline void from_json(const json& _j, quicktype::Witness& _x) {
-        if (_j == "") _x = quicktype::Witness::EMPTY;
-        else throw "Input JSON does not conform to schema";
-    }
-
-    inline void to_json(json& _j, const quicktype::Witness& _x) {
-        switch (_x) {
-            case quicktype::Witness::EMPTY: _j = ""; break;
-            default: throw "This should not happen";
-        }
     }
 
     inline void from_json(const json& _j, quicktype::RelayedBy& _x) {

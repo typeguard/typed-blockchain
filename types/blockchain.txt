@@ -18,18 +18,18 @@ class Tx {
     out: List<Out>
     lockTime: Int
     size: Int
-    rbf?: Bool
     doubleSpend: Bool
     time: Int
     txIndex: Int
     vinSz: Int
     hash: String
     voutSz: Int
+    rbf?: Bool
 }
 
 class Input {
     sequence: Int
-    witness: Witness
+    witness: String
     prevOut: Out
     script: String
 }
@@ -43,7 +43,5 @@ class Out {
     n: Int
     script: String
 }
-
-enum Witness = Empty
 
 enum RelayedBy = The0000 | The127001

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.*;
 
 public class Input {
     private long sequence;
-    private Witness witness;
+    private String witness;
     private Out prevOut;
     private String script;
 
@@ -15,9 +15,9 @@ public class Input {
     public void setSequence(long value) { this.sequence = value; }
 
     @JsonProperty("witness")
-    public Witness getWitness() { return witness; }
+    public String getWitness() { return witness; }
     @JsonProperty("witness")
-    public void setWitness(Witness value) { this.witness = value; }
+    public void setWitness(String value) { this.witness = value; }
 
     @JsonProperty("prev_out")
     public Out getPrevOut() { return prevOut; }

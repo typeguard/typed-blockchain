@@ -33,31 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSDictionary *)JSONDictionary;
 @end
 
-@implementation QTWitness
-+ (NSDictionary<NSString *, QTWitness *> *)values
-{
-    static NSDictionary<NSString *, QTWitness *> *values;
-    return values = values ? values : @{
-        @"": [[QTWitness alloc] initWithValue:@""],
-    };
-}
-
-+ (QTWitness *)empty { return QTWitness.values[@""]; }
-
-+ (instancetype _Nullable)withValue:(NSString *)value
-{
-    return QTWitness.values[value];
-}
-
-- (instancetype)initWithValue:(NSString *)value
-{
-    if (self = [super init]) _value = value;
-    return self;
-}
-
-- (NSUInteger)hash { return _value.hash; }
-@end
-
 @implementation QTRelayedBy
 + (NSDictionary<NSString *, QTRelayedBy *> *)values
 {
@@ -301,13 +276,13 @@ NSString *_Nullable QTUnconfirmedTransactionsToJSON(QTUnconfirmedTransactions *u
         @"out": @"out",
         @"lock_time": @"lockTime",
         @"size": @"size",
-        @"rbf": @"rbf",
         @"double_spend": @"isDoubleSpend",
         @"time": @"time",
         @"tx_index": @"txIndex",
         @"vin_sz": @"vinSz",
         @"hash": @"theHash",
         @"vout_sz": @"voutSz",
+        @"rbf": @"rbf",
     };
 }
 
@@ -376,7 +351,6 @@ NSString *_Nullable QTUnconfirmedTransactionsToJSON(QTUnconfirmedTransactions *u
 {
     if (self = [super init]) {
         [self setValuesForKeysWithDictionary:dict];
-        _witness = [QTWitness withValue:(id)_witness];
         _prevOut = [QTOut fromJSONDictionary:(id)_prevOut];
     }
     return self;
@@ -400,7 +374,6 @@ NSString *_Nullable QTUnconfirmedTransactionsToJSON(QTUnconfirmedTransactions *u
     }
 
     [dict addEntriesFromDictionary:@{
-        @"witness": [_witness value],
         @"prev_out": [_prevOut JSONDictionary],
     }];
 
