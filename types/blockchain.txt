@@ -1,0 +1,46 @@
+class LatestBlock {
+    hash: String
+    time: Int
+    blockIndex: Int
+    height: Int
+    txIndexes: List<Int>
+}
+
+class UnconfirmedTransactions {
+    txs: List<Tx>
+}
+
+class Tx {
+    ver: Int
+    inputs: List<Input>
+    weight: Int
+    relayedBy: RelayedBy
+    out: List<Out>
+    lockTime: Int
+    size: Int
+    doubleSpend: Bool
+    time: Int
+    txIndex: Int
+    vinSz: Int
+    hash: String
+    voutSz: Int
+}
+
+class Input {
+    sequence: Int
+    witness: String
+    prevOut: Out
+    script: String
+}
+
+class Out {
+    spent: Bool
+    txIndex: Int
+    type: Int
+    addr: String
+    value: Int
+    n: Int
+    script: String
+}
+
+enum RelayedBy = The0000 | The127001

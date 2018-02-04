@@ -1,0 +1,200 @@
+{
+    "oneOf": [
+        [
+            "LatestBlock",
+            {
+                "$ref": "#/definitions/LatestBlock"
+            }
+        ],
+        [
+            "UnconfirmedTransactions",
+            {
+                "$ref": "#/definitions/UnconfirmedTransactions"
+            }
+        ]
+    ],
+    "definitions": {
+        "LatestBlock": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "hash": {
+                    "type": "string"
+                },
+                "time": {
+                    "type": "integer"
+                },
+                "block_index": {
+                    "type": "integer"
+                },
+                "height": {
+                    "type": "integer"
+                },
+                "txIndexes": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "required": [
+                "block_index",
+                "hash",
+                "height",
+                "time",
+                "txIndexes"
+            ],
+            "title": "LatestBlock"
+        },
+        "Input": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "sequence": {
+                    "type": "integer"
+                },
+                "witness": {
+                    "type": "string"
+                },
+                "prev_out": {
+                    "$ref": "#/definitions/Out"
+                },
+                "script": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "prev_out",
+                "script",
+                "sequence",
+                "witness"
+            ],
+            "title": "input"
+        },
+        "Out": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "spent": {
+                    "type": "boolean"
+                },
+                "tx_index": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "addr": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "integer"
+                },
+                "n": {
+                    "type": "integer"
+                },
+                "script": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "addr",
+                "n",
+                "script",
+                "spent",
+                "tx_index",
+                "type",
+                "value"
+            ],
+            "title": "out"
+        },
+        "Tx": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "ver": {
+                    "type": "integer"
+                },
+                "inputs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Input"
+                    }
+                },
+                "weight": {
+                    "type": "integer"
+                },
+                "relayed_by": {
+                    "type": "string",
+                    "enum": [
+                        "0.0.0.0",
+                        "127.0.0.1"
+                    ],
+                    "title": "relayed_by"
+                },
+                "out": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Out"
+                    }
+                },
+                "lock_time": {
+                    "type": "integer"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "double_spend": {
+                    "type": "boolean"
+                },
+                "time": {
+                    "type": "integer"
+                },
+                "tx_index": {
+                    "type": "integer"
+                },
+                "vin_sz": {
+                    "type": "integer"
+                },
+                "hash": {
+                    "type": "string"
+                },
+                "vout_sz": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "double_spend",
+                "hash",
+                "inputs",
+                "lock_time",
+                "out",
+                "relayed_by",
+                "size",
+                "time",
+                "tx_index",
+                "ver",
+                "vin_sz",
+                "vout_sz",
+                "weight"
+            ],
+            "title": "tx"
+        },
+        "UnconfirmedTransactions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "txs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Tx"
+                    }
+                }
+            },
+            "required": [
+                "txs"
+            ],
+            "title": "UnconfirmedTransactions"
+        }
+    }
+}
