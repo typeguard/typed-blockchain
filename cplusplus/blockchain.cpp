@@ -25,7 +25,7 @@ namespace quicktype {
         bool spent;
         int64_t tx_index;
         int64_t type;
-        std::string addr;
+        std::unique_ptr<std::string> addr;
         int64_t value;
         int64_t n;
         std::string script;
@@ -48,7 +48,6 @@ namespace quicktype {
         std::vector<struct Out> out;
         int64_t lock_time;
         int64_t size;
-        std::unique_ptr<bool> rbf;
         bool double_spend;
         int64_t time;
         int64_t tx_index;
@@ -115,7 +114,7 @@ namespace nlohmann {
         _x.spent = _j.at("spent").get<bool>();
         _x.tx_index = _j.at("tx_index").get<int64_t>();
         _x.type = _j.at("type").get<int64_t>();
-        _x.addr = _j.at("addr").get<std::string>();
+        _x.addr = quicktype::get_optional<std::string>(_j, "addr");
         _x.value = _j.at("value").get<int64_t>();
         _x.n = _j.at("n").get<int64_t>();
         _x.script = _j.at("script").get<std::string>();
@@ -155,7 +154,6 @@ namespace nlohmann {
         _x.out = _j.at("out").get<std::vector<struct quicktype::Out>>();
         _x.lock_time = _j.at("lock_time").get<int64_t>();
         _x.size = _j.at("size").get<int64_t>();
-        _x.rbf = quicktype::get_optional<bool>(_j, "rbf");
         _x.double_spend = _j.at("double_spend").get<bool>();
         _x.time = _j.at("time").get<int64_t>();
         _x.tx_index = _j.at("tx_index").get<int64_t>();
@@ -173,7 +171,6 @@ namespace nlohmann {
         _j["out"] = _x.out;
         _j["lock_time"] = _x.lock_time;
         _j["size"] = _x.size;
-        _j["rbf"] = _x.rbf;
         _j["double_spend"] = _x.double_spend;
         _j["time"] = _x.time;
         _j["tx_index"] = _x.tx_index;

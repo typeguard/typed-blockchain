@@ -49,20 +49,19 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface QTTx : NSObject
-@property (nonatomic, assign)           NSInteger ver;
-@property (nonatomic, copy)             NSArray<QTInput *> *inputs;
-@property (nonatomic, assign)           NSInteger weight;
-@property (nonatomic, assign)           QTRelayedBy *relayedBy;
-@property (nonatomic, copy)             NSArray<QTOut *> *out;
-@property (nonatomic, assign)           NSInteger lockTime;
-@property (nonatomic, assign)           NSInteger size;
-@property (nonatomic, nullable, strong) NSNumber *rbf;
-@property (nonatomic, assign)           BOOL isDoubleSpend;
-@property (nonatomic, assign)           NSInteger time;
-@property (nonatomic, assign)           NSInteger txIndex;
-@property (nonatomic, assign)           NSInteger vinSz;
-@property (nonatomic, copy)             NSString *theHash;
-@property (nonatomic, assign)           NSInteger voutSz;
+@property (nonatomic, assign) NSInteger ver;
+@property (nonatomic, copy)   NSArray<QTInput *> *inputs;
+@property (nonatomic, assign) NSInteger weight;
+@property (nonatomic, assign) QTRelayedBy *relayedBy;
+@property (nonatomic, copy)   NSArray<QTOut *> *out;
+@property (nonatomic, assign) NSInteger lockTime;
+@property (nonatomic, assign) NSInteger size;
+@property (nonatomic, assign) BOOL isDoubleSpend;
+@property (nonatomic, assign) NSInteger time;
+@property (nonatomic, assign) NSInteger txIndex;
+@property (nonatomic, assign) NSInteger vinSz;
+@property (nonatomic, copy)   NSString *theHash;
+@property (nonatomic, assign) NSInteger voutSz;
 @end
 
 @interface QTInput : NSObject
@@ -73,13 +72,13 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface QTOut : NSObject
-@property (nonatomic, assign) BOOL isSpent;
-@property (nonatomic, assign) NSInteger txIndex;
-@property (nonatomic, assign) NSInteger type;
-@property (nonatomic, copy)   NSString *addr;
-@property (nonatomic, assign) NSInteger value;
-@property (nonatomic, assign) NSInteger n;
-@property (nonatomic, copy)   NSString *script;
+@property (nonatomic, assign)         BOOL isSpent;
+@property (nonatomic, assign)         NSInteger txIndex;
+@property (nonatomic, assign)         NSInteger type;
+@property (nonatomic, nullable, copy) NSString *addr;
+@property (nonatomic, assign)         NSInteger value;
+@property (nonatomic, assign)         NSInteger n;
+@property (nonatomic, copy)           NSString *script;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -28,7 +28,6 @@ export interface Tx {
     out:          Out[];
     lock_time:    number;
     size:         number;
-    rbf?:         boolean;
     double_spend: boolean;
     time:         number;
     tx_index:     number;
@@ -48,7 +47,7 @@ export interface Out {
     spent:    boolean;
     tx_index: number;
     type:     number;
-    addr:     string;
+    addr?:    string;
     value:    number;
     n:        number;
     script:   string;
@@ -174,7 +173,6 @@ export module Convert {
             out: A(O("Out")),
             lock_time: 0,
             size: 0,
-            rbf: U(null, false),
             double_spend: false,
             time: 0,
             tx_index: 0,
@@ -192,7 +190,7 @@ export module Convert {
             spent: false,
             tx_index: 0,
             type: 0,
-            addr: "",
+            addr: U(null, ""),
             value: 0,
             n: 0,
             script: "",

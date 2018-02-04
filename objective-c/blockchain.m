@@ -276,7 +276,6 @@ NSString *_Nullable QTUnconfirmedTransactionsToJSON(QTUnconfirmedTransactions *u
         @"out": @"out",
         @"lock_time": @"lockTime",
         @"size": @"size",
-        @"rbf": @"rbf",
         @"double_spend": @"isDoubleSpend",
         @"time": @"time",
         @"tx_index": @"txIndex",

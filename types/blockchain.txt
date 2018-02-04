@@ -18,7 +18,6 @@ class Tx {
     out: List<Out>
     lockTime: Int
     size: Int
-    rbf?: Bool
     doubleSpend: Bool
     time: Int
     txIndex: Int
@@ -38,7 +37,7 @@ class Out {
     spent: Bool
     txIndex: Int
     type: Int
-    addr: String
+    addr?: String
     value: Int
     n: Int
     script: String
