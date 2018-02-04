@@ -61,6 +61,9 @@ namespace QuickType
         [JsonProperty("size")]
         public long Size { get; set; }
 
+        [JsonProperty("rbf")]
+        public bool? Rbf { get; set; }
+
         [JsonProperty("double_spend")]
         public bool DoubleSpend { get; set; }
 
@@ -86,7 +89,7 @@ namespace QuickType
         public long Sequence { get; set; }
 
         [JsonProperty("witness")]
-        public string Witness { get; set; }
+        public Witness Witness { get; set; }
 
         [JsonProperty("prev_out")]
         public Out PrevOut { get; set; }
@@ -119,6 +122,8 @@ namespace QuickType
         public string Script { get; set; }
     }
 
+    public enum Witness { Empty };
+
     public enum RelayedBy { The0000, The127001 };
 
     public partial class LatestBlock
@@ -129,6 +134,34 @@ namespace QuickType
     public partial class UnconfirmedTransactions
     {
         public static UnconfirmedTransactions FromJson(string json) => JsonConvert.DeserializeObject<UnconfirmedTransactions>(json, Converter.Settings);
+    }
+
+    static class WitnessExtensions
+    {
+        public static Witness? ValueForString(string str)
+        {
+            switch (str)
+            {
+                case "": return Witness.Empty;
+                default: return null;
+            }
+        }
+
+        public static Witness ReadJson(JsonReader reader, JsonSerializer serializer)
+        {
+            var str = serializer.Deserialize<string>(reader);
+            var maybeValue = ValueForString(str);
+            if (maybeValue.HasValue) return maybeValue.Value;
+            throw new Exception("Unknown enum case " + str);
+        }
+
+        public static void WriteJson(this Witness value, JsonWriter writer, JsonSerializer serializer)
+        {
+            switch (value)
+            {
+                case Witness.Empty: serializer.Serialize(writer, ""); break;
+            }
+        }
     }
 
     static class RelayedByExtensions
@@ -169,12 +202,19 @@ namespace QuickType
 
     public class Converter: JsonConverter
     {
-        public override bool CanConvert(Type t) => t == typeof(RelayedBy) || t == typeof(RelayedBy?);
+        public override bool CanConvert(Type t) => t == typeof(Witness) || t == typeof(RelayedBy) || t == typeof(Witness?) || t == typeof(RelayedBy?);
 
         public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
         {
+            if (t == typeof(Witness))
+                return WitnessExtensions.ReadJson(reader, serializer);
             if (t == typeof(RelayedBy))
                 return RelayedByExtensions.ReadJson(reader, serializer);
+            if (t == typeof(Witness?))
+            {
+                if (reader.TokenType == JsonToken.Null) return null;
+                return WitnessExtensions.ReadJson(reader, serializer);
+            }
             if (t == typeof(RelayedBy?))
             {
                 if (reader.TokenType == JsonToken.Null) return null;
@@ -186,6 +226,11 @@ namespace QuickType
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var t = value.GetType();
+            if (t == typeof(Witness))
+            {
+                ((Witness)value).WriteJson(writer, serializer);
+                return;
+            }
             if (t == typeof(RelayedBy))
             {
                 ((RelayedBy)value).WriteJson(writer, serializer);

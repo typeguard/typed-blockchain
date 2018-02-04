@@ -28,6 +28,7 @@ struct Tx: Codable {
     let relayedBy: RelayedBy
     let out: [Out]
     let lockTime, size: Int
+    let rbf: Bool?
     let doubleSpend: Bool
     let time, txIndex, vinSz: Int
     let hash: String
@@ -38,7 +39,7 @@ struct Tx: Codable {
         case relayedBy = "relayed_by"
         case out
         case lockTime = "lock_time"
-        case size
+        case size, rbf
         case doubleSpend = "double_spend"
         case time
         case txIndex = "tx_index"
@@ -50,7 +51,7 @@ struct Tx: Codable {
 
 struct Input: Codable {
     let sequence: Int
-    let witness: String
+    let witness: Witness
     let prevOut: Out
     let script: String
 
@@ -64,7 +65,7 @@ struct Input: Codable {
 struct Out: Codable {
     let spent: Bool
     let txIndex, type: Int
-    let addr: String?
+    let addr: String
     let value, n: Int
     let script: String
 
@@ -73,6 +74,10 @@ struct Out: Codable {
         case txIndex = "tx_index"
         case type, addr, value, n, script
     }
+}
+
+enum Witness: String, Codable {
+    case empty = ""
 }
 
 enum RelayedBy: String, Codable {

@@ -28,6 +28,7 @@ export interface Tx {
     out:          Out[];
     lock_time:    number;
     size:         number;
+    rbf?:         boolean;
     double_spend: boolean;
     time:         number;
     tx_index:     number;
@@ -38,7 +39,7 @@ export interface Tx {
 
 export interface Input {
     sequence: number;
-    witness:  string;
+    witness:  Witness;
     prev_out: Out;
     script:   string;
 }
@@ -47,10 +48,14 @@ export interface Out {
     spent:    boolean;
     tx_index: number;
     type:     number;
-    addr?:    string;
+    addr:     string;
     value:    number;
     n:        number;
     script:   string;
+}
+
+export enum Witness {
+    Empty = "",
 }
 
 export enum RelayedBy {
@@ -173,6 +178,7 @@ export module Convert {
             out: A(O("Out")),
             lock_time: 0,
             size: 0,
+            rbf: U(null, false),
             double_spend: false,
             time: 0,
             tx_index: 0,
@@ -182,7 +188,7 @@ export module Convert {
         },
         "Input": {
             sequence: 0,
-            witness: "",
+            witness: E("Witness"),
             prev_out: O("Out"),
             script: "",
         },
@@ -190,11 +196,14 @@ export module Convert {
             spent: false,
             tx_index: 0,
             type: 0,
-            addr: U(null, ""),
+            addr: "",
             value: 0,
             n: 0,
             script: "",
         },
+        "Witness": [
+            Witness.Empty,
+        ],
         "RelayedBy": [
             RelayedBy.The0000,
             RelayedBy.The127001,

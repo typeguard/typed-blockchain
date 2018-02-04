@@ -1,4 +1,4 @@
-# Typed Blockchain Bitcoin APIs
+# Blockchain Bitcoin APIs – Typed JSON API
 
 > Info about digital currencies
 

@@ -54,7 +54,11 @@
                     "type": "integer"
                 },
                 "witness": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                        ""
+                    ],
+                    "title": "witness"
                 },
                 "prev_out": {
                     "$ref": "#/definitions/Out"
@@ -98,6 +102,7 @@
                 }
             },
             "required": [
+                "addr",
                 "n",
                 "script",
                 "spent",
@@ -142,6 +147,9 @@
                 },
                 "size": {
                     "type": "integer"
+                },
+                "rbf": {
+                    "type": "boolean"
                 },
                 "double_spend": {
                     "type": "boolean"
