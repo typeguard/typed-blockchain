@@ -61,6 +61,9 @@ namespace QuickType
         [JsonProperty("size")]
         public long Size { get; set; }
 
+        [JsonProperty("rbf")]
+        public bool? Rbf { get; set; }
+
         [JsonProperty("double_spend")]
         public bool DoubleSpend { get; set; }
 

@@ -144,6 +144,9 @@
                 "size": {
                     "type": "integer"
                 },
+                "rbf": {
+                    "type": "boolean"
+                },
                 "double_spend": {
                     "type": "boolean"
                 },

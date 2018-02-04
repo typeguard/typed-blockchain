@@ -28,6 +28,7 @@ struct Tx: Codable {
     let relayedBy: RelayedBy
     let out: [Out]
     let lockTime, size: Int
+    let rbf: Bool?
     let doubleSpend: Bool
     let time, txIndex, vinSz: Int
     let hash: String
@@ -38,7 +39,7 @@ struct Tx: Codable {
         case relayedBy = "relayed_by"
         case out
         case lockTime = "lock_time"
-        case size
+        case size, rbf
         case doubleSpend = "double_spend"
         case time
         case txIndex = "tx_index"

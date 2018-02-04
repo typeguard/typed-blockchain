@@ -50,6 +50,7 @@ type Tx struct {
 	Out         []Out     `json:"out"`
 	LockTime    int64     `json:"lock_time"`
 	Size        int64     `json:"size"`
+	Rbf         *bool     `json:"rbf"`
 	DoubleSpend bool      `json:"double_spend"`
 	Time        int64     `json:"time"`
 	TxIndex     int64     `json:"tx_index"`

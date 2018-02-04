@@ -48,6 +48,7 @@ namespace quicktype {
         std::vector<struct Out> out;
         int64_t lock_time;
         int64_t size;
+        std::unique_ptr<bool> rbf;
         bool double_spend;
         int64_t time;
         int64_t tx_index;
@@ -66,9 +67,32 @@ namespace quicktype {
         }
         return json();
     }
+    
+    template <typename T>
+    inline std::unique_ptr<T> get_optional(const json &j, const char *property) {
+        if (j.find(property) != j.end())
+            return j.at(property).get<std::unique_ptr<T>>();
+        return std::unique_ptr<T>();
+    }
 }
 
 namespace nlohmann {
+    template <typename T>
+    struct adl_serializer<std::unique_ptr<T>> {
+        static void to_json(json& j, const std::unique_ptr<T>& opt) {
+            if (!opt)
+                j = nullptr;
+            else
+                j = *opt;
+        }
+
+        static std::unique_ptr<T> from_json(const json& j) {
+            if (j.is_null())
+                return std::unique_ptr<T>();
+            else
+                return std::unique_ptr<T>(new T(j.get<T>()));
+        }
+    };
 
     inline void from_json(const json& _j, struct quicktype::LatestBlock& _x) {
         _x.hash = _j.at("hash").get<std::string>();
@@ -131,6 +155,7 @@ namespace nlohmann {
         _x.out = _j.at("out").get<std::vector<struct quicktype::Out>>();
         _x.lock_time = _j.at("lock_time").get<int64_t>();
         _x.size = _j.at("size").get<int64_t>();
+        _x.rbf = quicktype::get_optional<bool>(_j, "rbf");
         _x.double_spend = _j.at("double_spend").get<bool>();
         _x.time = _j.at("time").get<int64_t>();
         _x.tx_index = _j.at("tx_index").get<int64_t>();
@@ -148,6 +173,7 @@ namespace nlohmann {
         _j["out"] = _x.out;
         _j["lock_time"] = _x.lock_time;
         _j["size"] = _x.size;
+        _j["rbf"] = _x.rbf;
         _j["double_spend"] = _x.double_spend;
         _j["time"] = _x.time;
         _j["tx_index"] = _x.tx_index;
@@ -178,4 +204,5 @@ namespace nlohmann {
             default: throw "This should not happen";
         }
     }
+
 }

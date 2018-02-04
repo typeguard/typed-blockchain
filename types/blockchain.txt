@@ -18,6 +18,7 @@ class Tx {
     out: List<Out>
     lockTime: Int
     size: Int
+    rbf?: Bool
     doubleSpend: Bool
     time: Int
     txIndex: Int
