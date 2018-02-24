@@ -50,6 +50,7 @@ type Tx struct {
 	Out         []Out     `json:"out"`         
 	LockTime    int64     `json:"lock_time"`   
 	Size        int64     `json:"size"`        
+	Rbf         *bool     `json:"rbf"`         
 	DoubleSpend bool      `json:"double_spend"`
 	Time        int64     `json:"time"`        
 	TxIndex     int64     `json:"tx_index"`    
@@ -66,13 +67,13 @@ type Input struct {
 }
 
 type Out struct {
-	Spent   bool   `json:"spent"`   
-	TxIndex int64  `json:"tx_index"`
-	Type    int64  `json:"type"`    
-	Addr    string `json:"addr"`    
-	Value   int64  `json:"value"`   
-	N       int64  `json:"n"`       
-	Script  string `json:"script"`  
+	Spent   bool    `json:"spent"`   
+	TxIndex int64   `json:"tx_index"`
+	Type    int64   `json:"type"`    
+	Addr    *string `json:"addr"`    
+	Value   int64   `json:"value"`   
+	N       int64   `json:"n"`       
+	Script  string  `json:"script"`  
 }
 
 type RelayedBy string

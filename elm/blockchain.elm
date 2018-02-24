@@ -51,6 +51,7 @@ type alias Tx =
     , out : Array Out
     , lockTime : Int
     , size : Int
+    , rbf : Maybe Bool
     , doubleSpend : Bool
     , time : Int
     , txIndex : Int
@@ -70,7 +71,7 @@ type alias Out =
     { spent : Bool
     , txIndex : Int
     , outType : Int
-    , addr : String
+    , addr : Maybe String
     , value : Int
     , n : Int
     , script : String
@@ -128,6 +129,7 @@ tx =
         |> Jpipe.required "out" (Jdec.array out)
         |> Jpipe.required "lock_time" Jdec.int
         |> Jpipe.required "size" Jdec.int
+        |> Jpipe.optional "rbf" (Jdec.nullable Jdec.bool) Nothing
         |> Jpipe.required "double_spend" Jdec.bool
         |> Jpipe.required "time" Jdec.int
         |> Jpipe.required "tx_index" Jdec.int
@@ -145,6 +147,7 @@ encodeTx x =
         , ("out", makeArrayEncoder encodeOut x.out)
         , ("lock_time", Jenc.int x.lockTime)
         , ("size", Jenc.int x.size)
+        , ("rbf", makeNullableEncoder Jenc.bool x.rbf)
         , ("double_spend", Jenc.bool x.doubleSpend)
         , ("time", Jenc.int x.time)
         , ("tx_index", Jenc.int x.txIndex)
@@ -176,7 +179,7 @@ out =
         |> Jpipe.required "spent" Jdec.bool
         |> Jpipe.required "tx_index" Jdec.int
         |> Jpipe.required "type" Jdec.int
-        |> Jpipe.required "addr" Jdec.string
+        |> Jpipe.optional "addr" (Jdec.nullable Jdec.string) Nothing
         |> Jpipe.required "value" Jdec.int
         |> Jpipe.required "n" Jdec.int
         |> Jpipe.required "script" Jdec.string
@@ -187,7 +190,7 @@ encodeOut x =
         [ ("spent", Jenc.bool x.spent)
         , ("tx_index", Jenc.int x.txIndex)
         , ("type", Jenc.int x.outType)
-        , ("addr", Jenc.string x.addr)
+        , ("addr", makeNullableEncoder Jenc.string x.addr)
         , ("value", Jenc.int x.value)
         , ("n", Jenc.int x.n)
         , ("script", Jenc.string x.script)

@@ -60,6 +60,9 @@ pub struct Tx {
     #[serde(rename = "size")]
     size: i64,
 
+    #[serde(rename = "rbf")]
+    rbf: Option<bool>,
+
     #[serde(rename = "double_spend")]
     double_spend: bool,
 
@@ -106,7 +109,7 @@ pub struct Out {
     out_type: i64,
 
     #[serde(rename = "addr")]
-    addr: String,
+    addr: Option<String>,
 
     #[serde(rename = "value")]
     value: i64,

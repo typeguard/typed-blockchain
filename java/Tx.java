@@ -11,6 +11,7 @@ public class Tx {
     private Out[] out;
     private long lockTime;
     private long size;
+    private Boolean rbf;
     private boolean doubleSpend;
     private long time;
     private long txIndex;
@@ -52,6 +53,11 @@ public class Tx {
     public long getSize() { return size; }
     @JsonProperty("size")
     public void setSize(long value) { this.size = value; }
+
+    @JsonProperty("rbf")
+    public Boolean getRbf() { return rbf; }
+    @JsonProperty("rbf")
+    public void setRbf(Boolean value) { this.rbf = value; }
 
     @JsonProperty("double_spend")
     public boolean getDoubleSpend() { return doubleSpend; }

@@ -98,7 +98,6 @@
                 }
             },
             "required": [
-                "addr",
                 "n",
                 "script",
                 "spent",
@@ -143,6 +142,9 @@
                 },
                 "size": {
                     "type": "integer"
+                },
+                "rbf": {
+                    "type": "boolean"
                 },
                 "double_spend": {
                     "type": "boolean"
