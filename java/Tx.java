@@ -17,7 +17,6 @@ public class Tx {
     private long vinSz;
     private String hash;
     private long voutSz;
-    private Boolean rbf;
 
     @JsonProperty("ver")
     public long getVer() { return ver; }
@@ -83,9 +82,4 @@ public class Tx {
     public long getVoutSz() { return voutSz; }
     @JsonProperty("vout_sz")
     public void setVoutSz(long value) { this.voutSz = value; }
-
-    @JsonProperty("rbf")
-    public Boolean getRbf() { return rbf; }
-    @JsonProperty("rbf")
-    public void setRbf(Boolean value) { this.rbf = value; }
 }

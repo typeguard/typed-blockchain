@@ -2,17 +2,18 @@
 //
 //    using QuickType;
 //
-//    var data = LatestBlock.FromJson(jsonString);
-//
-//    var data = UnconfirmedTransactions.FromJson(jsonString);
+//    var latestBlock = LatestBlock.FromJson(jsonString);
+//    var unconfirmedTransactions = UnconfirmedTransactions.FromJson(jsonString);
 
 namespace QuickType
 {
     using System;
-    using System.Net;
     using System.Collections.Generic;
+    using System.Net;
 
+    using System.Globalization;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
 
     public partial class LatestBlock
     {
@@ -78,9 +79,6 @@ namespace QuickType
 
         [JsonProperty("vout_sz")]
         public long VoutSz { get; set; }
-
-        [JsonProperty("rbf")]
-        public bool? Rbf { get; set; }
     }
 
     public partial class Input
@@ -107,7 +105,7 @@ namespace QuickType
         public long TxIndex { get; set; }
 
         [JsonProperty("type")]
-        public long PurpleType { get; set; }
+        public long Type { get; set; }
 
         [JsonProperty("addr")]
         public string Addr { get; set; }
@@ -126,12 +124,12 @@ namespace QuickType
 
     public partial class LatestBlock
     {
-        public static LatestBlock FromJson(string json) => JsonConvert.DeserializeObject<LatestBlock>(json, Converter.Settings);
+        public static LatestBlock FromJson(string json) => JsonConvert.DeserializeObject<LatestBlock>(json, QuickType.Converter.Settings);
     }
 
     public partial class UnconfirmedTransactions
     {
-        public static UnconfirmedTransactions FromJson(string json) => JsonConvert.DeserializeObject<UnconfirmedTransactions>(json, Converter.Settings);
+        public static UnconfirmedTransactions FromJson(string json) => JsonConvert.DeserializeObject<UnconfirmedTransactions>(json, QuickType.Converter.Settings);
     }
 
     static class RelayedByExtensions
@@ -166,11 +164,11 @@ namespace QuickType
 
     public static class Serialize
     {
-        public static string ToJson(this LatestBlock self) => JsonConvert.SerializeObject(self, Converter.Settings);
-        public static string ToJson(this UnconfirmedTransactions self) => JsonConvert.SerializeObject(self, Converter.Settings);
+        public static string ToJson(this LatestBlock self) => JsonConvert.SerializeObject(self, QuickType.Converter.Settings);
+        public static string ToJson(this UnconfirmedTransactions self) => JsonConvert.SerializeObject(self, QuickType.Converter.Settings);
     }
 
-    public class Converter: JsonConverter
+    internal class Converter: JsonConverter
     {
         public override bool CanConvert(Type t) => t == typeof(RelayedBy) || t == typeof(RelayedBy?);
 
@@ -201,7 +199,13 @@ namespace QuickType
         {
             MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
             DateParseHandling = DateParseHandling.None,
-            Converters = { new Converter() },
+            Converters = { 
+                new Converter(),
+                new IsoDateTimeConverter()
+                {
+                    DateTimeStyles = DateTimeStyles.AssumeUniversal,
+                },
+            },
         };
     }
 }

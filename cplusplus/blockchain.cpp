@@ -1,10 +1,10 @@
 //  To parse this JSON data, first install
-//
+// 
 //      Boost     http://www.boost.org
 //      json.hpp  https://github.com/nlohmann/json
-//
+// 
 //  Then include this file, and then do
-//
+// 
 //     LatestBlock data = nlohmann::json::parse(jsonString);
 //     UnconfirmedTransactions data = nlohmann::json::parse(jsonString);
 
@@ -54,7 +54,6 @@ namespace quicktype {
         int64_t vin_sz;
         std::string hash;
         int64_t vout_sz;
-        std::unique_ptr<bool> rbf;
     };
 
     struct UnconfirmedTransactions {
@@ -67,33 +66,9 @@ namespace quicktype {
         }
         return json();
     }
-    
-    template <typename T>
-    inline std::unique_ptr<T> get_optional(const json &j, const char *property) {
-        if (j.find(property) != j.end())
-            return j.at(property).get<std::unique_ptr<T>>();
-        return std::unique_ptr<T>();
-    }
 }
 
 namespace nlohmann {
-    template <typename T>
-    struct adl_serializer<std::unique_ptr<T>> {
-        static void to_json(json& j, const std::unique_ptr<T>& opt) {
-            if (!opt)
-                j = nullptr;
-            else
-                j = *opt;
-        }
-
-        static std::unique_ptr<T> from_json(const json& j) {
-            if (j.is_null())
-                return std::unique_ptr<T>();
-            else
-                return std::unique_ptr<T>(new T(j.get<T>()));
-        }
-    };
-
     inline void from_json(const json& _j, struct quicktype::LatestBlock& _x) {
         _x.hash = _j.at("hash").get<std::string>();
         _x.time = _j.at("time").get<int64_t>();
@@ -161,7 +136,6 @@ namespace nlohmann {
         _x.vin_sz = _j.at("vin_sz").get<int64_t>();
         _x.hash = _j.at("hash").get<std::string>();
         _x.vout_sz = _j.at("vout_sz").get<int64_t>();
-        _x.rbf = quicktype::get_optional<bool>(_j, "rbf");
     }
 
     inline void to_json(json& _j, const struct quicktype::Tx& _x) {
@@ -179,7 +153,6 @@ namespace nlohmann {
         _j["vin_sz"] = _x.vin_sz;
         _j["hash"] = _x.hash;
         _j["vout_sz"] = _x.vout_sz;
-        _j["rbf"] = _x.rbf;
     }
 
     inline void from_json(const json& _j, struct quicktype::UnconfirmedTransactions& _x) {
@@ -204,5 +177,4 @@ namespace nlohmann {
             default: throw "This should not happen";
         }
     }
-
 }

@@ -1,9 +1,9 @@
 -- To decode the JSON data, add this file to your project, run
---
+-- 
 --     elm-package install NoRedInk/elm-decode-pipeline
---
+-- 
 -- add these imports
---
+-- 
 --     import Json.Decode exposing (decodeString)`);
 --     import QuickType exposing (latestBlock, unconfirmedTransactions)
 --
@@ -57,7 +57,6 @@ type alias Tx =
     , vinSz : Int
     , hash : String
     , voutSz : Int
-    , rbf : Maybe Bool
     }
 
 type alias Input =
@@ -70,7 +69,7 @@ type alias Input =
 type alias Out =
     { spent : Bool
     , txIndex : Int
-    , purpleType : Int
+    , outType : Int
     , addr : String
     , value : Int
     , n : Int
@@ -135,7 +134,6 @@ tx =
         |> Jpipe.required "vin_sz" Jdec.int
         |> Jpipe.required "hash" Jdec.string
         |> Jpipe.required "vout_sz" Jdec.int
-        |> Jpipe.optional "rbf" (Jdec.nullable Jdec.bool) Nothing
 
 encodeTx : Tx -> Jenc.Value
 encodeTx x =
@@ -153,7 +151,6 @@ encodeTx x =
         , ("vin_sz", Jenc.int x.vinSz)
         , ("hash", Jenc.string x.hash)
         , ("vout_sz", Jenc.int x.voutSz)
-        , ("rbf", makeNullableEncoder Jenc.bool x.rbf)
         ]
 
 input : Jdec.Decoder Input
@@ -189,7 +186,7 @@ encodeOut x =
     Jenc.object
         [ ("spent", Jenc.bool x.spent)
         , ("tx_index", Jenc.int x.txIndex)
-        , ("type", Jenc.int x.purpleType)
+        , ("type", Jenc.int x.outType)
         , ("addr", Jenc.string x.addr)
         , ("value", Jenc.int x.value)
         , ("n", Jenc.int x.n)

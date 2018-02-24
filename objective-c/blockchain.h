@@ -1,8 +1,8 @@
 // To parse this JSON:
-//
+// 
 //   NSError *error;
-//   QTLatestBlock *latestBlock = [QTLatestBlock fromJSON:json encoding:NSUTF8Encoding error:&error]
-//   QTUnconfirmedTransactions *unconfirmedTransactions = [QTUnconfirmedTransactions fromJSON:json encoding:NSUTF8Encoding error:&error]
+//   QTLatestBlock *latestBlock = [QTLatestBlock fromJSON:json encoding:NSUTF8Encoding error:&error];
+//   QTUnconfirmedTransactions *unconfirmedTransactions = [QTUnconfirmedTransactions fromJSON:json encoding:NSUTF8Encoding error:&error];
 
 #import <Foundation/Foundation.h>
 
@@ -49,20 +49,19 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface QTTx : NSObject
-@property (nonatomic, assign)           NSInteger ver;
-@property (nonatomic, copy)             NSArray<QTInput *> *inputs;
-@property (nonatomic, assign)           NSInteger weight;
-@property (nonatomic, assign)           QTRelayedBy *relayedBy;
-@property (nonatomic, copy)             NSArray<QTOut *> *out;
-@property (nonatomic, assign)           NSInteger lockTime;
-@property (nonatomic, assign)           NSInteger size;
-@property (nonatomic, assign)           BOOL isDoubleSpend;
-@property (nonatomic, assign)           NSInteger time;
-@property (nonatomic, assign)           NSInteger txIndex;
-@property (nonatomic, assign)           NSInteger vinSz;
-@property (nonatomic, copy)             NSString *theHash;
-@property (nonatomic, assign)           NSInteger voutSz;
-@property (nonatomic, nullable, strong) NSNumber *rbf;
+@property (nonatomic, assign) NSInteger ver;
+@property (nonatomic, copy)   NSArray<QTInput *> *inputs;
+@property (nonatomic, assign) NSInteger weight;
+@property (nonatomic, assign) QTRelayedBy *relayedBy;
+@property (nonatomic, copy)   NSArray<QTOut *> *out;
+@property (nonatomic, assign) NSInteger lockTime;
+@property (nonatomic, assign) NSInteger size;
+@property (nonatomic, assign) BOOL isDoubleSpend;
+@property (nonatomic, assign) NSInteger time;
+@property (nonatomic, assign) NSInteger txIndex;
+@property (nonatomic, assign) NSInteger vinSz;
+@property (nonatomic, copy)   NSString *theHash;
+@property (nonatomic, assign) NSInteger voutSz;
 @end
 
 @interface QTInput : NSObject

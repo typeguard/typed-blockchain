@@ -1,10 +1,10 @@
 // To parse and unparse this JSON data, add this code to your project and do:
 //
-//    r, err := UnmarshalLatestBlock(bytes)
-//    bytes, err = r.Marshal()
+//    latestBlock, err := UnmarshalLatestBlock(bytes)
+//    bytes, err = latestBlock.Marshal()
 //
-//    r, err := UnmarshalUnconfirmedTransactions(bytes)
-//    bytes, err = r.Marshal()
+//    unconfirmedTransactions, err := UnmarshalUnconfirmedTransactions(bytes)
+//    bytes, err = unconfirmedTransactions.Marshal()
 
 package main
 
@@ -31,11 +31,11 @@ func (r *UnconfirmedTransactions) Marshal() ([]byte, error) {
 }
 
 type LatestBlock struct {
-	Hash       string  `json:"hash"`
-	Time       int64   `json:"time"`
+	Hash       string  `json:"hash"`       
+	Time       int64   `json:"time"`       
 	BlockIndex int64   `json:"block_index"`
-	Height     int64   `json:"height"`
-	TxIndexes  []int64 `json:"txIndexes"`
+	Height     int64   `json:"height"`     
+	TxIndexes  []int64 `json:"txIndexes"`  
 }
 
 type UnconfirmedTransactions struct {
@@ -43,37 +43,36 @@ type UnconfirmedTransactions struct {
 }
 
 type Tx struct {
-	Ver         int64     `json:"ver"`
-	Inputs      []Input   `json:"inputs"`
-	Weight      int64     `json:"weight"`
-	RelayedBy   RelayedBy `json:"relayed_by"`
-	Out         []Out     `json:"out"`
-	LockTime    int64     `json:"lock_time"`
-	Size        int64     `json:"size"`
+	Ver         int64     `json:"ver"`         
+	Inputs      []Input   `json:"inputs"`      
+	Weight      int64     `json:"weight"`      
+	RelayedBy   RelayedBy `json:"relayed_by"`  
+	Out         []Out     `json:"out"`         
+	LockTime    int64     `json:"lock_time"`   
+	Size        int64     `json:"size"`        
 	DoubleSpend bool      `json:"double_spend"`
-	Time        int64     `json:"time"`
-	TxIndex     int64     `json:"tx_index"`
-	VinSz       int64     `json:"vin_sz"`
-	Hash        string    `json:"hash"`
-	VoutSz      int64     `json:"vout_sz"`
-	Rbf         *bool     `json:"rbf"`
+	Time        int64     `json:"time"`        
+	TxIndex     int64     `json:"tx_index"`    
+	VinSz       int64     `json:"vin_sz"`      
+	Hash        string    `json:"hash"`        
+	VoutSz      int64     `json:"vout_sz"`     
 }
 
 type Input struct {
 	Sequence int64  `json:"sequence"`
-	Witness  string `json:"witness"`
+	Witness  string `json:"witness"` 
 	PrevOut  Out    `json:"prev_out"`
-	Script   string `json:"script"`
+	Script   string `json:"script"`  
 }
 
 type Out struct {
-	Spent   bool   `json:"spent"`
+	Spent   bool   `json:"spent"`   
 	TxIndex int64  `json:"tx_index"`
-	Type    int64  `json:"type"`
-	Addr    string `json:"addr"`
-	Value   int64  `json:"value"`
-	N       int64  `json:"n"`
-	Script  string `json:"script"`
+	Type    int64  `json:"type"`    
+	Addr    string `json:"addr"`    
+	Value   int64  `json:"value"`   
+	N       int64  `json:"n"`       
+	Script  string `json:"script"`  
 }
 
 type RelayedBy string

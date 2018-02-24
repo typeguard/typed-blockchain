@@ -24,7 +24,6 @@ class Tx {
     vinSz: Int
     hash: String
     voutSz: Int
-    rbf?: Bool
 }
 
 class Input {

@@ -34,7 +34,6 @@ export interface Tx {
     vin_sz:       number;
     hash:         string;
     vout_sz:      number;
-    rbf?:         boolean;
 }
 
 export interface Input {
@@ -63,7 +62,7 @@ export enum RelayedBy {
 // and asserts the results of JSON.parse at runtime
 export module Convert {
     export function toLatestBlock(json: string): LatestBlock {
-        return cast(JSON.parse(json), O("LatestBlock"));
+        return cast(JSON.parse(json), o("LatestBlock"));
     }
 
     export function latestBlockToJson(value: LatestBlock): string {
@@ -71,7 +70,7 @@ export module Convert {
     }
 
     export function toUnconfirmedTransactions(json: string): UnconfirmedTransactions {
-        return cast(JSON.parse(json), O("UnconfirmedTransactions"));
+        return cast(JSON.parse(json), o("UnconfirmedTransactions"));
     }
 
     export function unconfirmedTransactionsToJson(value: UnconfirmedTransactions): string {
@@ -112,7 +111,7 @@ export module Convert {
 
     function isValidArray(typ: any, val: any): boolean {
         // val must be an array with no invalid elements
-        return Array.isArray(val) && val.every((element, i) => {
+        return Array.isArray(val) && val.every(element => {
             return isValid(typ, element);
         });
     }
@@ -135,23 +134,23 @@ export module Convert {
         });
     }
 
-    function A(typ: any) {
+    function a(typ: any) {
         return { typ, isArray: true };
     }
 
-    function E(name: string) {
+    function e(name: string) {
         return { name, isEnum: true };
     }
 
-    function U(...typs: any[]) {
+    function u(...typs: any[]) {
         return { typs, isUnion: true };
     }
 
-    function M(typ: any) {
+    function m(typ: any) {
         return { typ, isMap: true };
     }
 
-    function O(className: string) {
+    function o(className: string) {
         return { cls: className, isObject: true };
     }
 
@@ -161,17 +160,17 @@ export module Convert {
             time: 0,
             block_index: 0,
             height: 0,
-            txIndexes: A(0),
+            txIndexes: a(0),
         },
         "UnconfirmedTransactions": {
-            txs: A(O("Tx")),
+            txs: a(o("Tx")),
         },
         "Tx": {
             ver: 0,
-            inputs: A(O("Input")),
+            inputs: a(o("Input")),
             weight: 0,
-            relayed_by: E("RelayedBy"),
-            out: A(O("Out")),
+            relayed_by: e("RelayedBy"),
+            out: a(o("Out")),
             lock_time: 0,
             size: 0,
             double_spend: false,
@@ -180,12 +179,11 @@ export module Convert {
             vin_sz: 0,
             hash: "",
             vout_sz: 0,
-            rbf: U(null, false),
         },
         "Input": {
             sequence: 0,
             witness: "",
-            prev_out: O("Out"),
+            prev_out: o("Out"),
             script: "",
         },
         "Out": {
@@ -198,8 +196,8 @@ export module Convert {
             script: "",
         },
         "RelayedBy": [
-            RelayedBy.The0000,
-            RelayedBy.The127001,
+            "0.0.0.0",
+            "127.0.0.1",
         ],
     };
 }

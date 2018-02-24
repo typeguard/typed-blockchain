@@ -161,9 +161,6 @@
                 },
                 "vout_sz": {
                     "type": "integer"
-                },
-                "rbf": {
-                    "type": "boolean"
                 }
             },
             "required": [

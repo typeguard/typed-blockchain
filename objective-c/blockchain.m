@@ -282,7 +282,6 @@ NSString *_Nullable QTUnconfirmedTransactionsToJSON(QTUnconfirmedTransactions *u
         @"vin_sz": @"vinSz",
         @"hash": @"theHash",
         @"vout_sz": @"voutSz",
-        @"rbf": @"rbf",
     };
 }
 
