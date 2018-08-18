@@ -3,12 +3,12 @@
 // #[macro_use]
 // extern crate serde_derive;
 // extern crate serde_json;
-// 
-// use generated_module::LatestBlock;
-// 
+//
+// use generated_module::[object Object];
+//
 // fn main() {
 //     let json = r#"{"answer": 42}"#;
-//     let model: LatestBlock = serde_json::from_str(&json).unwrap();
+//     let model: [object Object] = serde_json::from_str(&json).unwrap();
 // }
 
 extern crate serde_json;
@@ -59,9 +59,6 @@ pub struct Tx {
 
     #[serde(rename = "size")]
     size: i64,
-
-    #[serde(rename = "rbf")]
-    rbf: Option<bool>,
 
     #[serde(rename = "double_spend")]
     double_spend: bool,

@@ -1,18 +1,5 @@
 {
-    "oneOf": [
-        [
-            "LatestBlock",
-            {
-                "$ref": "#/definitions/LatestBlock"
-            }
-        ],
-        [
-            "UnconfirmedTransactions",
-            {
-                "$ref": "#/definitions/UnconfirmedTransactions"
-            }
-        ]
-    ],
+    "$schema": "http://json-schema.org/draft-06/schema#",
     "definitions": {
         "LatestBlock": {
             "type": "object",
@@ -46,66 +33,21 @@
             ],
             "title": "LatestBlock"
         },
-        "Input": {
+        "UnconfirmedTransactions": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "sequence": {
-                    "type": "integer"
-                },
-                "witness": {
-                    "type": "string"
-                },
-                "prev_out": {
-                    "$ref": "#/definitions/Out"
-                },
-                "script": {
-                    "type": "string"
+                "txs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Tx"
+                    }
                 }
             },
             "required": [
-                "prev_out",
-                "script",
-                "sequence",
-                "witness"
+                "txs"
             ],
-            "title": "input"
-        },
-        "Out": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "spent": {
-                    "type": "boolean"
-                },
-                "tx_index": {
-                    "type": "integer"
-                },
-                "type": {
-                    "type": "integer"
-                },
-                "addr": {
-                    "type": "string"
-                },
-                "value": {
-                    "type": "integer"
-                },
-                "n": {
-                    "type": "integer"
-                },
-                "script": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "n",
-                "script",
-                "spent",
-                "tx_index",
-                "type",
-                "value"
-            ],
-            "title": "out"
+            "title": "UnconfirmedTransactions"
         },
         "Tx": {
             "type": "object",
@@ -124,12 +66,7 @@
                     "type": "integer"
                 },
                 "relayed_by": {
-                    "type": "string",
-                    "enum": [
-                        "0.0.0.0",
-                        "127.0.0.1"
-                    ],
-                    "title": "relayed_by"
+                    "$ref": "#/definitions/RelayedBy"
                 },
                 "out": {
                     "type": "array",
@@ -142,9 +79,6 @@
                 },
                 "size": {
                     "type": "integer"
-                },
-                "rbf": {
-                    "type": "boolean"
                 },
                 "double_spend": {
                     "type": "boolean"
@@ -180,23 +114,76 @@
                 "vout_sz",
                 "weight"
             ],
-            "title": "tx"
+            "title": "Tx"
         },
-        "UnconfirmedTransactions": {
+        "Input": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "txs": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Tx"
-                    }
+                "sequence": {
+                    "type": "integer"
+                },
+                "witness": {
+                    "type": "string"
+                },
+                "prev_out": {
+                    "$ref": "#/definitions/Out"
+                },
+                "script": {
+                    "type": "string"
                 }
             },
             "required": [
-                "txs"
+                "prev_out",
+                "script",
+                "sequence",
+                "witness"
             ],
-            "title": "UnconfirmedTransactions"
+            "title": "Input"
+        },
+        "Out": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "spent": {
+                    "type": "boolean"
+                },
+                "tx_index": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "addr": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "integer"
+                },
+                "n": {
+                    "type": "integer"
+                },
+                "script": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "n",
+                "script",
+                "spent",
+                "tx_index",
+                "type",
+                "value"
+            ],
+            "title": "Out"
+        },
+        "RelayedBy": {
+            "type": "string",
+            "enum": [
+                "0.0.0.0",
+                "127.0.0.1"
+            ],
+            "title": "RelayedBy"
         }
     }
 }

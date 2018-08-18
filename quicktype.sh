@@ -8,8 +8,11 @@ quicktype data -o objective-c/blockchain.m
 quicktype data -o java/blockchain.java
 quicktype data -o typescript/blockchain.ts
 quicktype data -o javascript/blockchain.js
-quicktype data -o flow/blockchain.flow
+quicktype data -o flow/blockchain.js
 quicktype data -o swift4/blockchain.swift
+quicktype data -o kotlin/blockchain.kt
 quicktype data -o elm/blockchain.elm
 quicktype data -o json-schema/blockchain.schema
-quicktype data -o types/blockchain.txt
+quicktype data -o ruby/blockchain.rb
+quicktype data -o dart/blockchain.dart
+quicktype data -o python/blockchain.py

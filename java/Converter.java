@@ -1,9 +1,9 @@
 // To use this code, add the following Maven dependency to your project:
-// 
+//
 //     com.fasterxml.jackson.core : jackson-databind : 2.9.0
-// 
+//
 // Import this package:
-// 
+//
 //     import io.quicktype.Converter;
 //
 // Then you can deserialize a JSON string with
@@ -47,12 +47,12 @@ public class Converter {
     }
 
     private static ObjectReader getLatestBlockObjectReader() {
-        if (LatestBlockReader == null) instantiateMapper();
+        if (LatestBlockReader == null) instantiateLatestBlockMapper();
         return LatestBlockReader;
     }
 
     private static ObjectWriter getLatestBlockObjectWriter() {
-        if (LatestBlockWriter == null) instantiateMapper();
+        if (LatestBlockWriter == null) instantiateLatestBlockMapper();
         return LatestBlockWriter;
     }
 
@@ -66,12 +66,12 @@ public class Converter {
     }
 
     private static ObjectReader getUnconfirmedTransactionsObjectReader() {
-        if (UnconfirmedTransactionsReader == null) instantiateMapper();
+        if (UnconfirmedTransactionsReader == null) instantiateUnconfirmedTransactionsMapper();
         return UnconfirmedTransactionsReader;
     }
 
     private static ObjectWriter getUnconfirmedTransactionsObjectWriter() {
-        if (UnconfirmedTransactionsWriter == null) instantiateMapper();
+        if (UnconfirmedTransactionsWriter == null) instantiateUnconfirmedTransactionsMapper();
         return UnconfirmedTransactionsWriter;
     }
 }

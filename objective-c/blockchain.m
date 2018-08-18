@@ -180,7 +180,8 @@ NSString *_Nullable QTUnconfirmedTransactionsToJSON(QTUnconfirmedTransactions *u
 
 - (void)setValue:(nullable id)value forKey:(NSString *)key
 {
-    [super setValue:value forKey:QTLatestBlock.properties[key]];
+    id resolved = QTLatestBlock.properties[key];
+    if (resolved) [super setValue:value forKey:resolved];
 }
 
 - (NSDictionary *)JSONDictionary
@@ -276,7 +277,6 @@ NSString *_Nullable QTUnconfirmedTransactionsToJSON(QTUnconfirmedTransactions *u
         @"out": @"out",
         @"lock_time": @"lockTime",
         @"size": @"size",
-        @"rbf": @"rbf",
         @"double_spend": @"isDoubleSpend",
         @"time": @"time",
         @"tx_index": @"txIndex",
@@ -304,7 +304,8 @@ NSString *_Nullable QTUnconfirmedTransactionsToJSON(QTUnconfirmedTransactions *u
 
 - (void)setValue:(nullable id)value forKey:(NSString *)key
 {
-    [super setValue:value forKey:QTTx.properties[key]];
+    id resolved = QTTx.properties[key];
+    if (resolved) [super setValue:value forKey:resolved];
 }
 
 - (NSDictionary *)JSONDictionary
@@ -358,7 +359,8 @@ NSString *_Nullable QTUnconfirmedTransactionsToJSON(QTUnconfirmedTransactions *u
 
 - (void)setValue:(nullable id)value forKey:(NSString *)key
 {
-    [super setValue:value forKey:QTInput.properties[key]];
+    id resolved = QTInput.properties[key];
+    if (resolved) [super setValue:value forKey:resolved];
 }
 
 - (NSDictionary *)JSONDictionary
@@ -411,7 +413,8 @@ NSString *_Nullable QTUnconfirmedTransactionsToJSON(QTUnconfirmedTransactions *u
 
 - (void)setValue:(nullable id)value forKey:(NSString *)key
 {
-    [super setValue:value forKey:QTOut.properties[key]];
+    id resolved = QTOut.properties[key];
+    if (resolved) [super setValue:value forKey:resolved];
 }
 
 - (NSDictionary *)JSONDictionary

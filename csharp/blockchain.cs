@@ -9,7 +9,6 @@ namespace QuickType
 {
     using System;
     using System.Collections.Generic;
-    using System.Net;
 
     using System.Globalization;
     using Newtonsoft.Json;
@@ -62,9 +61,6 @@ namespace QuickType
         [JsonProperty("size")]
         public long Size { get; set; }
 
-        [JsonProperty("rbf")]
-        public bool? Rbf { get; set; }
-
         [JsonProperty("double_spend")]
         public bool DoubleSpend { get; set; }
 
@@ -110,7 +106,7 @@ namespace QuickType
         [JsonProperty("type")]
         public long Type { get; set; }
 
-        [JsonProperty("addr")]
+        [JsonProperty("addr", NullValueHandling = NullValueHandling.Ignore)]
         public string Addr { get; set; }
 
         [JsonProperty("value")]
@@ -135,80 +131,63 @@ namespace QuickType
         public static UnconfirmedTransactions FromJson(string json) => JsonConvert.DeserializeObject<UnconfirmedTransactions>(json, QuickType.Converter.Settings);
     }
 
-    static class RelayedByExtensions
-    {
-        public static RelayedBy? ValueForString(string str)
-        {
-            switch (str)
-            {
-                case "0.0.0.0": return RelayedBy.The0000;
-                case "127.0.0.1": return RelayedBy.The127001;
-                default: return null;
-            }
-        }
-
-        public static RelayedBy ReadJson(JsonReader reader, JsonSerializer serializer)
-        {
-            var str = serializer.Deserialize<string>(reader);
-            var maybeValue = ValueForString(str);
-            if (maybeValue.HasValue) return maybeValue.Value;
-            throw new Exception("Unknown enum case " + str);
-        }
-
-        public static void WriteJson(this RelayedBy value, JsonWriter writer, JsonSerializer serializer)
-        {
-            switch (value)
-            {
-                case RelayedBy.The0000: serializer.Serialize(writer, "0.0.0.0"); break;
-                case RelayedBy.The127001: serializer.Serialize(writer, "127.0.0.1"); break;
-            }
-        }
-    }
-
     public static class Serialize
     {
         public static string ToJson(this LatestBlock self) => JsonConvert.SerializeObject(self, QuickType.Converter.Settings);
         public static string ToJson(this UnconfirmedTransactions self) => JsonConvert.SerializeObject(self, QuickType.Converter.Settings);
     }
 
-    internal class Converter: JsonConverter
+    internal static class Converter
+    {
+        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+        {
+            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+            DateParseHandling = DateParseHandling.None,
+            Converters = {
+                RelayedByConverter.Singleton,
+                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
+            },
+        };
+    }
+
+    internal class RelayedByConverter : JsonConverter
     {
         public override bool CanConvert(Type t) => t == typeof(RelayedBy) || t == typeof(RelayedBy?);
 
         public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
         {
-            if (t == typeof(RelayedBy))
-                return RelayedByExtensions.ReadJson(reader, serializer);
-            if (t == typeof(RelayedBy?))
+            if (reader.TokenType == JsonToken.Null) return null;
+            var value = serializer.Deserialize<string>(reader);
+            switch (value)
             {
-                if (reader.TokenType == JsonToken.Null) return null;
-                return RelayedByExtensions.ReadJson(reader, serializer);
+                case "0.0.0.0":
+                    return RelayedBy.The0000;
+                case "127.0.0.1":
+                    return RelayedBy.The127001;
             }
-            throw new Exception("Unknown type");
+            throw new Exception("Cannot unmarshal type RelayedBy");
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
         {
-            var t = value.GetType();
-            if (t == typeof(RelayedBy))
+            if (untypedValue == null)
             {
-                ((RelayedBy)value).WriteJson(writer, serializer);
+                serializer.Serialize(writer, null);
                 return;
             }
-            throw new Exception("Unknown type");
+            var value = (RelayedBy)untypedValue;
+            switch (value)
+            {
+                case RelayedBy.The0000:
+                    serializer.Serialize(writer, "0.0.0.0");
+                    return;
+                case RelayedBy.The127001:
+                    serializer.Serialize(writer, "127.0.0.1");
+                    return;
+            }
+            throw new Exception("Cannot marshal type RelayedBy");
         }
 
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-        {
-            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            DateParseHandling = DateParseHandling.None,
-            Converters = { 
-                new Converter(),
-                new IsoDateTimeConverter()
-                {
-                    DateTimeStyles = DateTimeStyles.AssumeUniversal,
-                },
-            },
-        };
+        public static readonly RelayedByConverter Singleton = new RelayedByConverter();
     }
 }

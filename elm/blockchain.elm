@@ -1,9 +1,9 @@
 -- To decode the JSON data, add this file to your project, run
--- 
+--
 --     elm-package install NoRedInk/elm-decode-pipeline
--- 
+--
 -- add these imports
--- 
+--
 --     import Json.Decode exposing (decodeString)`);
 --     import QuickType exposing (latestBlock, unconfirmedTransactions)
 --
@@ -51,7 +51,6 @@ type alias Tx =
     , out : Array Out
     , lockTime : Int
     , size : Int
-    , rbf : Maybe Bool
     , doubleSpend : Bool
     , time : Int
     , txIndex : Int
@@ -129,7 +128,6 @@ tx =
         |> Jpipe.required "out" (Jdec.array out)
         |> Jpipe.required "lock_time" Jdec.int
         |> Jpipe.required "size" Jdec.int
-        |> Jpipe.optional "rbf" (Jdec.nullable Jdec.bool) Nothing
         |> Jpipe.required "double_spend" Jdec.bool
         |> Jpipe.required "time" Jdec.int
         |> Jpipe.required "tx_index" Jdec.int
@@ -147,7 +145,6 @@ encodeTx x =
         , ("out", makeArrayEncoder encodeOut x.out)
         , ("lock_time", Jenc.int x.lockTime)
         , ("size", Jenc.int x.size)
-        , ("rbf", makeNullableEncoder Jenc.bool x.rbf)
         , ("double_spend", Jenc.bool x.doubleSpend)
         , ("time", Jenc.int x.time)
         , ("tx_index", Jenc.int x.txIndex)
